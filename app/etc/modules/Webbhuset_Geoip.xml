@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Webbhuset_Geoip>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Sandfox_GeoIP />
+            </depends>
+        </Webbhuset_Geoip>
+    </modules>
+</config>

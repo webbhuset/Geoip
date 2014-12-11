@@ -1,0 +1,35 @@
+{
+    "name": "webbhuset/geoip",
+    "type": "magento-module",
+    "license":"GPL 2.0",
+    "description":"Webbhuset GeoIP Redirect Magento Module",
+    "authors":[
+        {
+            "name":"Webbhuset",
+            "email":"info@webbhuset.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/webbhuset/Geoip.git"
+        }
+    ],
+    "extra": {
+        "map": [
+            [
+                "app/code/community/Webbhuset/Geoip/",
+                "app/code/community/Webbhuset/Geoip/"
+            ],
+            [
+                "app/etc/modules/Webbhuset_Geoip.xml",
+                "app/etc/modules/Webbhuset_Geoip.xml"
+            ]
+        ]
+    },
+    {
+        "require": {
+            "tim-bezhashvyly/geoip", "2.0.*"
+        }
+    }
+}

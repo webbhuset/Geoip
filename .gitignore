@@ -1,0 +1,7 @@
+/vendor
+.htaccess
+composer.lock
+
+# Overrides, keep at bottom of file
+# !.htaccess
+*.DS_Store

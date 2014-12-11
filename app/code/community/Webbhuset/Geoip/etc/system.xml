@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <tabs>
+        <webbhuset translate="label">
+            <label>Webbhuset</label>
+            <sort_order>200</sort_order>
+        </webbhuset>
+    </tabs>
+    <sections>
+        <geoip translate="label">
+            <label>GeoIP</label>
+            <tab>webbhuset</tab>
+            <sort_order>20</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>0</show_in_website>
+            <show_in_store>0</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General</label>
+                    <sort_order>1000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>0</show_in_website>
+                    <show_in_store>0</show_in_store>
+                    <fields>
+                        <enabled translate="label comment">
+                            <label>Enable Geoip Redirect</label>
+                            <comment>This will enable geoIp redirect to a store with have the customers country in the list of allowed countries (under System > Configuration > General > Allowed Countries).</comment>
+                            <sort_order>10</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <default>0</default>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enabled>
+                        <lock translate="label comment">
+                            <label>Lock user to store</label>
+                            <comment>If you want to lock user to the assigned store by geoIP. If not, redirect will only happen the first time you visit in a session.</comment>
+                            <sort_order>20</sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <default>0</default>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </lock>
+                        <exceptions translate="label comment">
+                            <label>Do'nt redirect</label>
+                            <comment>Controllers/Actions you dont want to redirect on. Specified one per row, like frontname/controller/action</comment>
+                            <default>moneybookerspsp\r\npaypal</default>
+                            <sort_order>30</sort_order>
+                            <frontend_type>textarea</frontend_type>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </exceptions>
+                    </fields>
+                </general>
+            </groups>
+        </geoip>
+    </sections>
+</config>

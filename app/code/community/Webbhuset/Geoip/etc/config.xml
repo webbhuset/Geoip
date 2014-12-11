@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Webbhuset_Geoip>
+            <version>0.1.0</version>
+        </Webbhuset_Geoip>
+    </modules>
+    <global>
+        <models>
+            <webbhusetgeoip>
+                <class>Webbhuset_Geoip_Model</class>
+            </webbhusetgeoip>
+        </models>
+        <blocks>
+            <webbhusetgeoip>
+                <class>Webbhuset_Geoip_Block</class>
+            </webbhusetgeoip>
+        </blocks>
+        <helpers>
+            <webbhusetgeoip>
+                <class>Webbhuset_Geoip_Helper</class>
+            </webbhusetgeoip>
+        </helpers>
+    </global>
+    <frontend>
+        <events>
+            <controller_action_predispatch>
+                <observers>
+                    <webbhusetgeoip_change_store>
+                        <type>singleton</type>
+                        <class>webbhusetgeoip/observer</class>
+                        <method>redirectStore</method>
+                    </webbhusetgeoip_change_store>
+                </observers>
+            </controller_action_predispatch>
+        </events>
+    </frontend>
+    <default>
+        <geoip>
+            <general>
+                <exceptions>
+<![CDATA[moneybookers
+moneybookerspsp
+paypal
+Dibspw
+Dibsfw
+klarna
+shipping
+paypaluk
+payex2
+bankdebit
+factoring
+paygate
+authorizenet
+payexapi
+payexautopay
+rss
+oauth
+api]]>
+                </exceptions>
+            </general>
+        </geoip>
+    </default>
+</config>
