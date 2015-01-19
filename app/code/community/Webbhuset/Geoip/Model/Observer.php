@@ -17,9 +17,10 @@ class Webbhuset_Geoip_Model_Observer
      */
     public function redirectStore(Varien_Event_Observer $observer)
     {
-        $enabled    = Mage::getStoreConfigFlag('geoip/general/enabled');
-        $lockStore  = Mage::getStoreConfigFlag('geoip/general/lock');
-        $exceptions = $this->_getExceptions();
+        $enabled        = Mage::getStoreConfigFlag('geoip/general/enabled');
+        $lockStore      = Mage::getStoreConfigFlag('geoip/general/lock');
+        $exceptions     = $this->_getExceptions();
+        $fallbackStore  = $this->_getFallbackStore();
 
         if (!$enabled) {
             return;
@@ -54,19 +55,25 @@ class Webbhuset_Geoip_Model_Observer
             return;
         }
 
-        $store = $this->_getStoreForCountry($currentCountry);
-
-        if (!$store) {
-            Mage::log("GeoIP: Could not find any store with the country allowed in.\nCountry: {$currentCountry}");
+        // If locked mode is on and country is not in allowed countries: Don't
+        // redirect when we are on fallback store.
+        if ($result->getLockedStore()
+            && $session->getNotInAllowedList()
+            && Mage::app()->getStore()->getId() == $fallbackStore->getId()
+        ) {
             return;
         }
 
-        $path       = ltrim(Mage::app()->getRequest()->getPathInfo(), '/');
-        $storeUrl   = $store->getBaseUrl() . $path;
+        $store = $this->_getStoreForCountry($currentCountry);
+
+        if (!$store) {
+            $store = $fallbackStore;
+            $session->setNotInAllowedList(true);
+        }
 
         $event = new Varien_Object(
             array(
-                'store_url'         => $store->getBaseUrl() . $path
+                'store_url'         => $store->getCurrentUrl(false),
             )
         );
 
@@ -77,6 +84,18 @@ class Webbhuset_Geoip_Model_Observer
         $response->setRedirect($event->getStoreUrl())->sendResponse();
 
         exit;
+    }
+
+    /**
+     * Get configured fallback store
+     *
+     * @return Mage_Core_Model_Store
+     */
+    protected function _getFallbackStore()
+    {
+        $fallbackStore = Mage::getStoreConfig('geoip/general/fallback');
+
+        return Mage::app()->getStore($fallbackStore);
     }
 
     /**
@@ -213,7 +232,10 @@ class Webbhuset_Geoip_Model_Observer
                 $stores = $group->getStores();
                 foreach ($stores as $store) {
                     $result = new Varien_Object(array('is_allowed' => 1, 'store' => $store));
-                    Mage::dispatchEvent('wh_geoip_redirect_match_default_country_before', array('result' => $result));
+                    Mage::dispatchEvent(
+                        'wh_geoip_redirect_match_default_country_before',
+                        array('result' => $result)
+                    );
 
                     $defaultCountry = Mage::getStoreConfig('general/country/default', $store->getId());
                     if ($result->getIsAllowed() && $defaultCountry == $country) {
@@ -243,7 +265,10 @@ class Webbhuset_Geoip_Model_Observer
                 $stores = $group->getStores();
                 foreach ($stores as $store) {
                     $result = new Varien_Object(array('is_allowed' => 1, 'store' => $store));
-                    Mage::dispatchEvent('wh_geoip_redirect_match_allowed_country_before', array('result' => $result));
+                    Mage::dispatchEvent(
+                        'wh_geoip_redirect_match_allowed_country_before',
+                        array('result' => $result)
+                    );
 
                     if ($result->getIsAllowed() && Mage::helper('webbhusetgeoip')->isCountryAllowed($country, $store)) {
                         return $store;
