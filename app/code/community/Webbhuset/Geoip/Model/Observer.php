@@ -55,7 +55,7 @@ class Webbhuset_Geoip_Model_Observer
             return;
         }
 
-        // If locked mode is on and country is not in allowed countries: Don't 
+        // If locked mode is on and country is not in allowed countries: Don't
         // redirect when we are on fallback store.
         if ($result->getLockedStore()
             && $session->getNotInAllowedList()
@@ -86,10 +86,16 @@ class Webbhuset_Geoip_Model_Observer
         exit;
     }
 
+    /**
+     * Get configured fallback store
+     *
+     * @return Mage_Core_Model_Store
+     */
     protected function _getFallbackStore()
     {
         $fallbackStore = Mage::getStoreConfig('geoip/general/fallback');
-        return Mage::getModel('core/store')->load((int)$fallbackStore);
+
+        return Mage::app()->getStore($fallbackStore);
     }
 
     /**
