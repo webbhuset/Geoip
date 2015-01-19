@@ -27,9 +27,7 @@
             ]
         ]
     },
-    {
-        "require": {
-            "tim-bezhashvyly/geoip": "2.0.*"
-        }
+    "require": {
+        "tim-bezhashvyly/geoip": "2.0.*"
     }
 }
