@@ -13,6 +13,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/webbhuset/Geoip.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/magento-hackathon/Sandfox_GeoIP.git"
         }
     ],
     "extra": {
