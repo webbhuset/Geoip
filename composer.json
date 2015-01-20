@@ -32,6 +32,6 @@
         ]
     },
     "require": {
-        "tim-bezhashvyly/geoip": "2.0.*"
+        "tim-bezhashvyly/geoip": "0.2.*"
     }
 }
