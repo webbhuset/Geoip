@@ -33,6 +33,15 @@
                     </webbhusetgeoip_change_store>
                 </observers>
             </controller_action_predispatch>
+            <controller_action_noroute>
+                <observers>
+                    <whgeoip_check_store_code>
+                        <type>singleton</type>
+                        <class>webbhusetgeoip/observer</class>
+                        <method>checkNoRoute</method>
+                    </whgeoip_check_store_code>
+                </observers>
+            </controller_action_noroute>
         </events>
     </frontend>
     <default>

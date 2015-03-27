@@ -26,11 +26,14 @@ class Webbhuset_Geoip_Model_Observer
             return;
         }
 
+        $this->checkNoRoute();
+
         $geoIP          = Mage::getSingleton('geoip/country');
         $currentCountry = $geoIP->getCountry();
         $response       = Mage::app()->getResponse();
         $session        = Mage::getSingleton('core/session');
         $result         = new Varien_Object(array('should_proceed' => 1));
+
 
         Mage::dispatchEvent('wh_geoip_redirect_store_before', array('result' => $result));
 
@@ -84,6 +87,65 @@ class Webbhuset_Geoip_Model_Observer
         $response->setRedirect($event->getStoreUrl())->sendResponse();
 
         exit;
+    }
+
+    /**
+     * Check if store code is in url on 404 page if this setting is enabled in admin.
+     * Will redirect if store code is not.
+     * 
+     * @param Varien_Event_Observer $observer
+     * @access public
+     * @return void
+     */
+    public function checkNoRoute()
+    {
+        $enabled = Mage::getStoreConfigFlag('geoip/general/enabled');
+
+        if (!$enabled) {
+            return;
+        }
+
+        if (!$this->_canBeStoreCodeInUrl()) {
+            return;
+        }
+
+        $noRoute        = explode('/', Mage::app()->getStore()->getConfig('web/default/no_route'));
+        $moduleName     = isset($noRoute[0]) ? $noRoute[0] : 'core';
+        $controllerName = isset($noRoute[1]) ? $noRoute[1] : 'index';
+        $actionName     = isset($noRoute[2]) ? $noRoute[2] : 'index';
+        $request        = Mage::app()->getRequest();
+        $requestUri     = trim($request->getRequestUri(), '/');
+        $urlStoreCode   = explode('/', $requestUri, 2);
+        $urlStoreCode   = isset($urlStoreCode[0]) ? $urlStoreCode[0] : '';
+        $storeInUrl     = true;
+
+        try {
+            Mage::app()->getStore($urlStoreCode);
+        } catch (Mage_Core_Model_Store_Exception $e) {
+            $storeInUrl = false;
+        }
+
+        if ($storeInUrl) {
+            return;
+        }
+
+        if ($moduleName        == $request->getModuleName()
+            && $controllerName == $request->getControllerName()
+            && $actionName     == $request->getActionName()
+        ) {
+            $geoIP          = Mage::getSingleton('geoip/country');
+            $currentCountry = $geoIP->getCountry();
+            $response       = Mage::app()->getResponse();
+
+            if ($currentCountry) {
+                $store = $this->_getStoreForCountry($currentCountry);
+            } else {
+                $store = $this->_getFallbackStore();
+            }
+
+            $response->setRedirect($store->getCurrentUrl(false))->sendResponse();
+            exit;
+        }
     }
 
     /**
@@ -278,5 +340,15 @@ class Webbhuset_Geoip_Model_Observer
         }
 
         return null;
+    }
+
+    /**
+     * Check if can be store code as part of url
+     *
+     * @return bool
+     */
+    protected function _canBeStoreCodeInUrl()
+    {
+        return Mage::isInstalled() && Mage::getStoreConfigFlag(Mage_Core_Model_Store::XML_PATH_STORE_IN_URL);
     }
 }
