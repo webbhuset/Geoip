@@ -77,7 +77,7 @@ class Webbhuset_Geoip_Model_Observer
             )
         );
 
-        Mage::dispatchEvent('wh_geoip_redirect_store_set_redirect_before', array('result' => $result));
+        Mage::dispatchEvent('wh_geoip_redirect_store_set_redirect_before', array('result' => $event));
 
         $session->setIsGeoipRedirected(true);
 
