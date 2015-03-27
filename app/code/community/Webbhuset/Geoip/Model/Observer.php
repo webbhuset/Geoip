@@ -286,24 +286,21 @@ class Webbhuset_Geoip_Model_Observer
      */
     public function _matchDefaultCountry($country)
     {
-        $websites = Mage::app()->getWebsites();
+        $stores = Mage::app()->getStores();
 
-        foreach ($websites as $website) {
-            $groups = $website->getGroups();
-            foreach ($groups as $group) {
-                $stores = $group->getStores();
-                foreach ($stores as $store) {
-                    $result = new Varien_Object(array('is_allowed' => 1, 'store' => $store));
-                    Mage::dispatchEvent(
-                        'wh_geoip_redirect_match_default_country_before',
-                        array('result' => $result)
-                    );
+        foreach ($stores as $store) {
+            if (!$store->getIsActive()) {
+                continue;
+            }
+            $result = new Varien_Object(array('is_allowed' => 1, 'store' => $store));
+            Mage::dispatchEvent(
+                'wh_geoip_redirect_match_default_country_before',
+                array('result' => $result)
+            );
 
-                    $defaultCountry = Mage::getStoreConfig('general/country/default', $store->getId());
-                    if ($result->getIsAllowed() && $defaultCountry == $country) {
-                        return $store;
-                    }
-                }
+            $defaultCountry = Mage::getStoreConfig('general/country/default', $store->getId());
+            if ($result->getIsAllowed() && $defaultCountry == $country) {
+                return $store;
             }
         }
 
@@ -319,23 +316,20 @@ class Webbhuset_Geoip_Model_Observer
      */
     public function _matchAllowedCountry($country)
     {
-        $websites = Mage::app()->getWebsites();
+        $stores = Mage::app()->getStores();
 
-        foreach ($websites as $website) {
-            $groups = $website->getGroups();
-            foreach ($groups as $group) {
-                $stores = $group->getStores();
-                foreach ($stores as $store) {
-                    $result = new Varien_Object(array('is_allowed' => 1, 'store' => $store));
-                    Mage::dispatchEvent(
-                        'wh_geoip_redirect_match_allowed_country_before',
-                        array('result' => $result)
-                    );
+        foreach ($stores as $store) {
+            if (!$store->getIsActive()) {
+                continue;
+            }
+            $result = new Varien_Object(array('is_allowed' => 1, 'store' => $store));
+            Mage::dispatchEvent(
+                'wh_geoip_redirect_match_allowed_country_before',
+                array('result' => $result)
+            );
 
-                    if ($result->getIsAllowed() && Mage::helper('webbhusetgeoip')->isCountryAllowed($country, $store)) {
-                        return $store;
-                    }
-                }
+            if ($result->getIsAllowed() && Mage::helper('webbhusetgeoip')->isCountryAllowed($country, $store)) {
+                return $store;
             }
         }
 
