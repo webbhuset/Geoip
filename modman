@@ -1,6 +1,2 @@
-app/code/community/Webbhuset/Geoip/etc/adminhtml.xml app/code/community/Webbhuset/Geoip/etc/adminhtml.xml
-app/code/community/Webbhuset/Geoip/etc/config.xml app/code/community/Webbhuset/Geoip/etc/config.xml
-app/code/community/Webbhuset/Geoip/etc/system.xml app/code/community/Webbhuset/Geoip/etc/system.xml
-app/code/community/Webbhuset/Geoip/Helper/Data.php app/code/community/Webbhuset/Geoip/Helper/Data.php
-app/code/community/Webbhuset/Geoip/Model/Observer.php app/code/community/Webbhuset/Geoip/Model/Observer.php
-app/etc/modules/Webbhuset_Geoip.xml app/etc/modules/Webbhuset_Geoip.xml
+app/code/community/Webbhuset/Geoip/*    app/code/community/Webbhuset/Geoip/
+app/etc/modules/Webbhuset_Geoip.xml     app/etc/modules/Webbhuset_Geoip.xml
