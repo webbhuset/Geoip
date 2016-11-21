@@ -37,6 +37,12 @@ class Webbhuset_Geoip_Model_Observer
 
         Mage::dispatchEvent('wh_geoip_redirect_store_before', array('result' => $result));
 
+        if (
+            isset($_SERVER['HTTP_USER_AGENT']) && preg_match('/bot|crawl|slurp|spider/i', $_SERVER['HTTP_USER_AGENT'])
+        ) {
+            $result->setShouldProceed(false);
+        }
+
         if (!$result->getShouldProceed()) {
             return;
         }
@@ -92,7 +98,7 @@ class Webbhuset_Geoip_Model_Observer
     /**
      * Check if store code is in url on 404 page if this setting is enabled in admin.
      * Will redirect if store code is not.
-     * 
+     *
      * @param Varien_Event_Observer $observer
      * @access public
      * @return void
