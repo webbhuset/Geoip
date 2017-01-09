@@ -26,6 +26,15 @@ class Webbhuset_Geoip_Model_Observer
             return;
         }
 
+        $request        = Mage::app()->getRequest();
+        $routeName      = $request->getRouteName();
+        $route          = Mage::app()->getFrontController()->getRouterByRoute($routeName);
+        $frontName      = $route->getFrontNameByRoute($routeName);
+
+        if ($request->isDirectAccessFrontendName($frontName)) {
+            return;
+        }
+
         $this->checkNoRoute();
 
         $geoIP          = Mage::getSingleton('geoip/country');
@@ -33,7 +42,6 @@ class Webbhuset_Geoip_Model_Observer
         $response       = Mage::app()->getResponse();
         $session        = Mage::getSingleton('core/session');
         $result         = new Varien_Object(array('should_proceed' => 1));
-
 
         Mage::dispatchEvent('wh_geoip_redirect_store_before', array('result' => $result));
 
