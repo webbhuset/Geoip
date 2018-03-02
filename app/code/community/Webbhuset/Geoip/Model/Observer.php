@@ -150,12 +150,12 @@ class Webbhuset_Geoip_Model_Observer
             $geoIP          = Mage::getSingleton('geoip/country');
             $currentCountry = $geoIP->getCountry();
             $response       = Mage::app()->getResponse();
+            $store          = null;
 
             if ($currentCountry) {
                 $store = $this->_getStoreForCountry($currentCountry);
-            } else {
-                $store = $this->_getFallbackStore();
             }
+            $store = $store ?: $this->_getFallbackStore();
 
             $response->setRedirect($store->getCurrentUrl(false))->sendResponse();
             exit;
