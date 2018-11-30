@@ -9,16 +9,24 @@
             "email":"info@webbhuset.com"
         }
     ],
+    "require":{
+        "magento-hackathon/magento-composer-installer": "^3.2"
+    },
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/webbhuset/Geoip.git"
+            "url": "https://github.com/maxmind/GeoIP2-php.git"
         },
         {
             "type": "vcs",
-            "url": "https://github.com/magento-hackathon/Sandfox_GeoIP.git"
+            "url": "https://github.com/Cotya/magento-composer-installer.git"
         }
     ],
+    "autoload": {
+        "psr-0": {
+            "Webbhuset_Geoip_": "app/code/community/"
+        }
+    },
     "extra": {
         "map": [
             [
@@ -28,10 +36,23 @@
             [
                 "app/etc/modules/Webbhuset_Geoip.xml",
                 "app/etc/modules/Webbhuset_Geoip.xml"
+            ],
+            [
+                "app/design/adminhtml/default/default/template/webbhuset/geoip",
+                "app/design/adminhtml/default/default/template/webbhuset/geoip"
+            ],
+            [
+                "app/design/adminhtml/default/default/layout/webbhuset/Geoip.xml",
+                "app/design/adminhtml/default/default/layout/webbhuset/Geoip.xml"
+            ],
+            [
+                "lib/GeoIp2/",
+                "lib/GeoIp2/"
+            ],
+            [
+                "lib/MaxMind/",
+                "lib/MaxMind/"
             ]
         ]
-    },
-    "require": {
-        "tim-bezhashvyly/geoip": "0.2.*"
     }
 }
