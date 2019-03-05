@@ -1,6 +1,6 @@
 <?php
 
-class Webbhuse_Geoip_Block_Adminhtml_Notifications
+class Webbhuset_Geoip_Block_Adminhtml_Notifications
     extends Mage_Adminhtml_Block_Template
 {
     public function checkFilePermissions()
