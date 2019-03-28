@@ -17,6 +17,11 @@ class Webbhuset_Geoip_Model_Observer
      */
     public function controllerFrontInitBefore(Varien_Event_Observer $observer)
     {
+        $enabled = Mage::getStoreConfigFlag('webbhusetgeoip/general/enabled');
+        if (!$enabled) {
+            return;
+        }
+
         Mage::getModel('webbhusetgeoip/country');
     }
 
