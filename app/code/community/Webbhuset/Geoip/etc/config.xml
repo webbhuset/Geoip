@@ -21,17 +21,6 @@
                 <class>Webbhuset_Geoip_Helper</class>
             </webbhusetgeoip>
         </helpers>
-        <events>
-            <controller_front_init_before>
-                <observers>
-                    <geoip>
-                        <type>singleton</type>
-                        <class>webbhusetgeoip/observer</class>
-                        <method>controllerFrontInitBefore</method>
-                    </geoip>
-                </observers>
-            </controller_front_init_before>
-        </events>
     </global>
     <frontend>
         <events>
