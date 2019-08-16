@@ -23,7 +23,7 @@ class Webbhuset_Geoip_Model_Country
 
         if (!$this->record && $this->reader) {
             try {
-                $this->record = $this->reader->country(Mage::helper('core/http')->getRemoteAddr());
+                $this->record = $this->reader->country(Mage::helper('webbhusetgeoip')->getIp());
                 $allowCountries = explode(',', (string)Mage::getStoreConfig('general/country/allow'));
                 $this->addAllowedCountry($allowCountries);
             } catch (Exception $e) {

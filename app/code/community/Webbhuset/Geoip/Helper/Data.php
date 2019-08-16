@@ -88,4 +88,22 @@ class Webbhuset_Geoip_Helper_Data extends Mage_Core_Helper_Abstract
 
         return 0;
     }
+
+    /**
+     * Returns remote IP or if configured replaces it with configured mock IP
+     *
+     * @return string
+     */    public function getIp()
+    {
+        $remoteIp = Mage::helper('core/http')->getRemoteAddr();
+        $localIp  = Mage::getStoreConfig('webbhusetgeoip/debug/local_ip');
+        $devIp    = Mage::getStoreConfig('webbhusetgeoip/debug/mock_ip');
+        $debug    = Mage::getStoreConfig('webbhusetgeoip/debug/enabled');
+
+        if ($localIp == $remoteIp && $devIp && $debug) {
+            return $devIp;
+        }
+
+        return $remoteIp;
+    }
 }
