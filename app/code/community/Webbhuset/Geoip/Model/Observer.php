@@ -86,6 +86,9 @@ class Webbhuset_Geoip_Model_Observer
 
         // Only redirect once per session if lock is not enabled
         if (!$result->getLockedStore() && $session->getIsGeoipRedirected()) {
+            if ($session->getGeoIpStore()) {
+                Mage::app()->setCurrentStore($session->getGeoIpStore());
+            }
             return;
         }
 
@@ -114,6 +117,7 @@ class Webbhuset_Geoip_Model_Observer
         Mage::dispatchEvent('wh_geoip_redirect_store_set_redirect_before', ['result' => $event]);
 
         $session->setIsGeoipRedirected(true);
+        $session->setGeoIpStore($store->getCode());
 
         $response->setRedirect($event->getStoreUrl())->sendResponse();
 
