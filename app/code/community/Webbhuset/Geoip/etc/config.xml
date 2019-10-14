@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Webbhuset_Geoip>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </Webbhuset_Geoip>
     </modules>
     <global>
@@ -45,7 +45,7 @@
         </events>
     </frontend>
     <default>
-        <geoip>
+        <webbhusetgeoip>
             <general>
                 <exceptions>
 <![CDATA[moneybookers
@@ -65,9 +65,41 @@ payexapi
 payexautopay
 rss
 oauth
-api]]>
+api
+cms/index/noRoute
+whklarnacheckout
+checkout
+]]>
                 </exceptions>
             </general>
-        </geoip>
+        </webbhusetgeoip>
     </default>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <webbhuset_geoip before="Mage_Adminhtml">Webbhuset_Geoip_Adminhtml</webbhuset_geoip>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <webbhusetgeoip>
+                    <file>webbhuset/geoip.xml</file>
+                </webbhusetgeoip>
+            </updates>
+        </layout>
+    </adminhtml>
+    <crontab>
+        <jobs>
+            <geoip_update>
+                <schedule><cron_expr>0 0 8 * *</cron_expr></schedule>
+                <run><model>webbhusetgeoip/cron::run</model></run>
+            </geoip_update>
+        </jobs>
+    </crontab>
 </config>
